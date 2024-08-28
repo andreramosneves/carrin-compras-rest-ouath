@@ -8,3 +8,6 @@ Recursos utilizados
 - Spring JPA
 - Spring Security(Aplicação com papéis)
 - Spring Validation
+
+
+Recomendável execução no Tomcat x10.
