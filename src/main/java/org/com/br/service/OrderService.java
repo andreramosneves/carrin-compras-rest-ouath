@@ -12,6 +12,7 @@ import org.com.br.bo.Kart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,17 +21,23 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrderService {
-    
-    private static final int PAGE_SIZE = 10;
-    
-    @Autowired
-    private OrderRepository dao;
 
-    @Autowired
-    private KartRepository daoKart;
+    private static final int PAGE_SIZE = 10;
+
+    private final OrderRepository dao;
+
+    private final KartRepository daoKart;
+
+    private final NotificationService service;
+
+    public OrderService(OrderRepository dao, KartRepository daoKart, NotificationService service) {
+        this.dao = dao;
+        this.daoKart = daoKart;
+        this.service = service;
+    }
 
     public Page<Order> listaPedidosPorUsuario(int id, int page) {
-        return dao.listOrderByUser(id,PageRequest.of(page, OrderService.PAGE_SIZE));
+        return dao.listOrderByUser(id, PageRequest.of(page, OrderService.PAGE_SIZE));
     }
 
     public Order save(Order geraValoresDefault) {
@@ -43,7 +50,15 @@ public class OrderService {
 
     public void saveKart(Kart kart) {
         daoKart.save(kart);
-    }  
-    
+    }
+
+    public void sendMessage(Order order) {
+        try {
+           service.sendNotification("Ordem " + order.getId());
+        } catch (Exception e) {
+
+        }
+
+    }
 
 }

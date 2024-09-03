@@ -4,6 +4,7 @@ package org.com.br.config;
  *
  * @author andre
  */
+import org.apache.kafka.clients.admin.NewTopic;
 import org.com.br.filters.JwtAuthenticatorFilter;
 import org.com.br.service.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -44,13 +46,7 @@ public class Application extends SpringBootServletInitializer {
     @Autowired
     private JWTService jwtService;
 
-    /*
-    @Bean
-    JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withIssuerLocation(this.issuer)
-                .jwsAlgorithm(RS512).build();
-    }    
-     */
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(Application.class);
@@ -77,7 +73,12 @@ public class Application extends SpringBootServletInitializer {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    
+    @Bean
+    public NewTopic topic(){
+        return TopicBuilder.name("AppOrderTopic").build();
+    }
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -103,31 +104,3 @@ public class Application extends SpringBootServletInitializer {
 
 }
 
-/*
-    @Bean
-    public RouterFunction<ServerResponse> routerFunction(MyUserHandler userHandler) {
-        return route()
-                .GET("/{user}", ACCEPT_JSON, userHandler::getUser)
-                .GET("/{user}/customers", ACCEPT_JSON, userHandler::getUserCustomers)
-                .DELETE("/{user}", ACCEPT_JSON, userHandler::deleteUser)
-                .build();
-    }
- */
- /*
-    
-    
-    @Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {
-
-            System.out.println("Let's inspect the beans provided by Spring Boot:");
-
-            String[] beanNames = ctx.getBeanDefinitionNames();
-            Arrays.sort(beanNames);
-            for (String beanName : beanNames) {
-                System.out.println(beanName);
-            }
-
-        };
-    }
- */

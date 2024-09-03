@@ -58,10 +58,9 @@ public class OrderController {
         return ResponseEntity.ok(pageDTO);
     }
 
-    
-   @PostMapping("/completeOrder")
-   @ResponseBody
-   public ResponseEntity<GenericResponse> completeOrder() {
+    @PostMapping("/completeOrder")
+    @ResponseBody
+    public ResponseEntity<GenericResponse> completeOrder() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Login credentials = (Login) authentication.getCredentials();
 
@@ -75,13 +74,14 @@ public class OrderController {
         Set<ConstraintViolation<Order>> violations = validator.validate(order);
         if (violations.isEmpty()) {
             order = service.save(order.geraValoresDefault());
+            service.sendMessage(order);
             for (Kart item : carrinho) {
                 item.setOrder(order);
                 service.saveKart(item);
             }
             return ResponseEntity.ok(new GenericResponse("Inserted with sucessfull",
                     true, new OrderDTO(order.getId(),
-                            order.getTotal(),order.getCreated_at(),
+                            order.getTotal(), order.getCreated_at(),
                             order.getDt_cadastro(),
                             order.getDt_termino(),
                             order.getDt_cancelamento()
@@ -91,5 +91,5 @@ public class OrderController {
         return ResponseEntity.ok(new GenericResponse("Don't possible insert!!" + violations.toString(),
                 false, null));
     }
-  
+
 }
