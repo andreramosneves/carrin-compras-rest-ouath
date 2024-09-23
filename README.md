@@ -8,6 +8,9 @@ Recursos utilizados
 - Spring JPA
 - Spring Security(Aplicação com papéis)
 - Spring Validation
+- Spring Kafka
+- Mongo DB
+- Maria DB/MySQL
 
 
 Recomendável execução no Tomcat x10.
