@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +34,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @SpringBootApplication
 @Configuration(proxyBeanMethods = false)
+@EnableMongoRepositories(basePackages = {"org.com.br.repositories"})
 @EnableJpaRepositories(basePackages = {"org.com.br.repositories"})
 @ComponentScan(basePackages = {"org.com.br.config", "org.com.br.controllers", "org.com.br.service", "org.com.br.auth", "org.com.br.filters"})
 @EntityScan(basePackages = "org.com.br.bo")
@@ -55,7 +57,8 @@ public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
+    
+    
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -74,10 +77,6 @@ public class Application extends SpringBootServletInitializer {
         return new BCryptPasswordEncoder();
     }
     
-    @Bean
-    public NewTopic topic(){
-        return TopicBuilder.name("AppOrderTopic").build();
-    }
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -101,6 +100,14 @@ public class Application extends SpringBootServletInitializer {
 
         return http.build();
     }
+    
+    
+    @Bean
+    public NewTopic topic(){
+        return TopicBuilder.name("AppOrderTopic").build();
+    }
+    
 
+    
 }
 

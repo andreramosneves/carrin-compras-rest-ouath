@@ -22,11 +22,12 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
  * @author andre
  * 
  */
-@Configuration
+//@Configuration
 public class KafkaConsumerConfig {
 
 
-    @Value("localhost:9092")
+    //@Value("localhost:9092")
+    @Value("${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapServers;
 
     public KafkaConsumerConfig() {

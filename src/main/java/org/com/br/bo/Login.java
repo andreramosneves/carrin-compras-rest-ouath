@@ -144,5 +144,15 @@ public class Login implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
-
+    
+    @Override
+    public String toString() {
+        return super.toString();
+/*		return String.format(
+				"Login[id=%s, name='%s', email='%s']",
+				id, name, email);
+*/
+    }
+    
+    
 }

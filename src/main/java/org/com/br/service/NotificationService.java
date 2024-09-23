@@ -35,7 +35,8 @@ public class NotificationService {
         System.out.println("Listener received:" + data);
     }
     
-    /*  Código para Consummir todos registro do Meu Proker
+    
+    /*  Código para Consummir todos registro do Meu Broker
         ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
         records.forEach(record -> {
             System.out.printf("Offset: %d, Key: %s, Value: %s%n", record.offset(), record.key(), record.value());
